@@ -3,12 +3,15 @@ from tkinter import *
 from tkinter import ttk
 import csv
 
+# Function to parse tabular data
+# Function to convert units of measurement
+
 master = Tk()
 master.title("Rail Car Dimensions")
-master.geometry("400x635")
+master.geometry("400x660")
 
 field_names = ['Id', 'Name', 'Description', 'Cabin Length', 'Wheel Length', 'Wheel Anchor', 'Track Guage',
-               'Envelope', 'User ID', 'URL Id', 'More Info']
+               'Envelope', 'Units', 'User ID', 'URL Id', 'More Info']
 
 
 # Verify input from user
@@ -98,9 +101,9 @@ e7.insert(END, '0.00')
 e8 = Text(master)  # Envelope
 e8.insert(END, '**Copy and Paste**')
 
-uom = ['m', 'ft', 'ussft']
+units = ['m', 'ft', 'ussft']
 
-e9 = ttk.Combobox(master, values=uom)
+e9 = ttk.Combobox(master, values=units)  # Unit of measurement
 e9.set('m')
 
 e10 = Entry(master)  # UserID
@@ -110,9 +113,9 @@ e11 = Entry(master)  # URL Id
 e11.insert(END, '12')
 
 e12 = Entry(master)  # MoreInfo
-e12.insert(END, 'google.com')
+e12.insert(END, 'www.website.com')
 
-e_list = [e1, e2, e3, e4, e5, e6, e7, e8, e10, e11, e12]
+e_list = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12]
 
 for i in e_list:
     i.grid(row=e_list.index(i), column=1, sticky=W + E, padx=10)
