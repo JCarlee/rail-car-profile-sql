@@ -1,10 +1,6 @@
 from tkinter import filedialog
 from tkinter import *
 from tkinter import ttk
-import csv
-
-# Function to parse tabular data
-# Function to convert units of measurement
 
 master = Tk()
 master.title("Rail Car Dimensions")
@@ -30,10 +26,11 @@ def make_sql_report():
     objectid = try_input(int(e1.get()))
     name = try_input(str(e2.get()))
     desc = try_input(str(e3.get()))
-    cabin_length = try_input(float(e4.get()))
-    wheel_length = try_input(float(e5.get()))
-    wheel_anchor = try_input(float(e6.get()))
-    track_guage = try_input(float(e7.get()))
+    cabin_length = conversion_check(float(e4.get()))
+    wheel_length = conversion_check(float(e5.get()))
+    wheel_anchor = conversion_check(float(e6.get()))
+    track_guage = conversion_check(float(e7.get()))
+    envel = try_input(str(convert_envelope()))
     user_id = try_input(int(e10.get()))
     url_id = try_input(int(e11.get()))
     more_info = try_input(str(e12.get()))
@@ -44,32 +41,63 @@ def make_sql_report():
                    "[TrackGuage], [Envelope], [UserId], [UrlId], [MoreInfo])\n\t")
     sql_file.write(
         "Values({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});\n".format(
-            objectid, name, desc, cabin_length, wheel_length, wheel_anchor, track_guage, None, user_id, url_id,
+            objectid, name, desc, cabin_length, wheel_length, wheel_anchor, track_guage, envel, user_id, url_id,
             more_info))
     sql_file.close()
 
-# m to ussft m * 1200/3937
-# ft to ussft 1 = 0.999998000004
-#
+
+def ft_m(ft):
+    return round(ft * .3048, 9)
 
 
-def transpose():
+def ussft_m(ussft):
+    return round(ussft * (1200 / 3937), 9)
+
+
+def read_envelope():
     env = e8.get("1.0", 'end-1c')
-    lol = csv.reader(env, delimiter='\t')
-    print(lol)
-#    for line in lol:
-#       print(line)
+    env_split = env.splitlines()
+    wh_pairs = []
+    flat_list = []
+    for line in env_split:
+        t = line.split('\t')
+        wh_pairs.append(t)
+    if e9.get() != 'Meters':
+        for sublist in wh_pairs:
+            for item in sublist:
+                flat_list.append(float(item))
+    elif e9.get() == 'Meters':
+        for sublist in wh_pairs:
+            for item in sublist:
+                flat_list.append(item)
+    return flat_list
 
 
-def envelope():
-    env = e8.get("1.0", 'end-1c')
-    if e9.get() == 'm':
-        pass
-    elif e9.get() == 'ft':
-        pass
-    elif e9.get() == 'ussft':
-        pass
-    print(env)
+def convert_envelope():
+    seperator = ','
+    env_list = read_envelope()
+    converted = []
+    if e9.get() == 'US Survey Feet':
+        for ussft in env_list:
+            b = ussft_m(ussft)
+            converted.append(str(b))
+        return seperator.join(converted)
+    elif e9.get() == 'Feet':
+        for ft in env_list:
+            b = ft_m(ft)
+            converted.append(str(b))
+        return seperator.join(converted)
+    elif e9.get() == 'Meters':
+        return seperator.join(env_list)
+
+
+def conversion_check(sql_val):
+    if e9.get() == 'US Survey Feet':
+        return ussft_m(sql_val)
+    elif e9.get() == 'Feet':
+        return ft_m(sql_val)
+    elif e9.get() == 'Meters':
+        return sql_val
 
 
 for i in field_names:
@@ -99,12 +127,12 @@ e7 = Entry(master)  # TrackGuage
 e7.insert(END, '0.00')
 
 e8 = Text(master)  # Envelope
-e8.insert(END, '**Copy and Paste**')
+e8.insert(END, 'Width\tHeight (no header)')
 
-units = ['m', 'ft', 'ussft']
+units = ['Meters', 'Feet', 'US Survey Feet']
 
 e9 = ttk.Combobox(master, values=units)  # Unit of measurement
-e9.set('m')
+e9.set('Meters')
 
 e10 = Entry(master)  # UserID
 e10.insert(END, '1')
@@ -121,8 +149,8 @@ for i in e_list:
     i.grid(row=e_list.index(i), column=1, sticky=W + E, padx=10)
 
 # Create Save button
-Button(master, text='Save', command=make_sql_report).grid(row=13, column=1, sticky=W+E, pady=4, padx=(0, 10))
-Button(master, text='Envelope', command=transpose).grid(row=13, column=0, sticky=W+E, pady=4, padx=10)
+Button(master, text='Save', command=make_sql_report).grid(row=13, column=1, sticky=W+E, pady=4, padx=10)
+# Button(master, text='Envelope', command=read_envelope).grid(row=13, column=0, sticky=W+E, pady=4, padx=10)
 
 # Ensure text boxes expand with window
 master.columnconfigure(1, weight=1)
