@@ -10,7 +10,6 @@ field_names = ['Id', 'Name', 'Description', 'Cabin Length', 'Wheel Length', 'Whe
                'Envelope', 'Units', 'User ID', 'URL Id', 'More Info']
 
 
-# Verify input from user
 def try_input(f):
     if f == '':
         return "NULL"
@@ -34,8 +33,6 @@ def make_sql_report():
     user_id = try_input(int(e10.get()))
     url_id = try_input(int(e11.get()))
     more_info = try_input(str(e12.get()))
-    # input_values = [objectid, name, desc, cabin_length, wheel_length, wheel_anchor, track_guage, envelope, user_id,
-    #                url_id, more_info]
     sql_file = open(master.filename, 'w')
     sql_file.write("Insert into [RailCar]([Id], [Name], [Description], [CabinLength], [WheelLength], [WheelAnchor], "
                    "[TrackGuage], [Envelope], [UserId], [UrlId], [MoreInfo])\n\t")
@@ -148,9 +145,7 @@ e_list = [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12]
 for i in e_list:
     i.grid(row=e_list.index(i), column=1, sticky=W + E, padx=10)
 
-# Create Save button
 Button(master, text='Save', command=make_sql_report).grid(row=13, column=1, sticky=W+E, pady=4, padx=10)
-# Button(master, text='Envelope', command=read_envelope).grid(row=13, column=0, sticky=W+E, pady=4, padx=10)
 
 # Ensure text boxes expand with window
 master.columnconfigure(1, weight=1)
