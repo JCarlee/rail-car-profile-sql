@@ -6,7 +6,7 @@ master = Tk()
 master.title("Rail Car Dimensions")
 master.geometry("400x660")
 
-field_names = ['Id', 'Name', 'Description', 'Cabin Length', 'Wheel Length', 'Wheel Anchor', 'Track Guage',
+field_names = ['Id', 'Name', 'Description', 'Cabin Length', 'Wheel Length', 'Wheel Anchor', 'Track Gauge',
                'Envelope', 'Units', 'User ID', 'URL Id', 'More Info']
 
 
@@ -27,8 +27,8 @@ def make_sql_report():
     desc = try_input(str(e3.get()))
     cabin_length = conversion_check(float(e4.get()))
     wheel_length = conversion_check(float(e5.get()))
-    wheel_anchor = conversion_check(float(e6.get()))
-    track_guage = conversion_check(float(e7.get()))
+    wheel_anchor = str(conversion_check(float(e6.get()))/2) + ',0'
+    track_gauge = conversion_check(float(e7.get()))
     envel = try_input(str(convert_envelope()))
     user_id = try_input(int(e10.get()))
     url_id = try_input(int(e11.get()))
@@ -38,7 +38,7 @@ def make_sql_report():
                    "[TrackGuage], [Envelope], [UserId], [UrlId], [MoreInfo])\n\t")
     sql_file.write(
         "Values({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10});\n".format(
-            objectid, name, desc, cabin_length, wheel_length, wheel_anchor, track_guage, envel, user_id, url_id,
+            objectid, name, desc, cabin_length, wheel_length, wheel_anchor, track_gauge, envel, user_id, url_id,
             more_info))
     sql_file.close()
 
@@ -109,7 +109,7 @@ e2 = Entry(master)  # Name
 e2.insert(END, '**CTA Series 2600**')
 
 e3 = Entry(master)  # Description
-e3.insert(END, '**Desc**')
+e3.insert(END, '**Type description here**')
 
 e4 = Entry(master)  # CabinLength
 e4.insert(END, '0.00')
@@ -120,13 +120,13 @@ e5.insert(END, '0.00')
 e6 = Entry(master)  # WheelAnchor
 e6.insert(END, '0.00')
 
-e7 = Entry(master)  # TrackGuage
+e7 = Entry(master)  # TrackGauge
 e7.insert(END, '0.00')
 
 e8 = Text(master)  # Envelope
 e8.insert(END, 'Width\tHeight (no header)')
 
-units = ['Meters', 'Feet', 'US Survey Feet']
+units = ['Meters', 'Feet']
 
 e9 = ttk.Combobox(master, values=units)  # Unit of measurement
 e9.set('Meters')
