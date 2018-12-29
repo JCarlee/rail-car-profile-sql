@@ -27,7 +27,7 @@ def make_sql_report():
     desc = try_input(str(e3.get()))
     cabin_length = conversion_check(float(e4.get()))
     wheel_length = conversion_check(float(e5.get()))
-    wheel_anchor = str(conversion_check(float(e6.get()))/2) + ',0'
+    wheel_anchor = try_input(str(conversion_check(float(e6.get()))/2) + ',0')
     track_gauge = conversion_check(float(e7.get()))
     envel = try_input(str(convert_envelope()))
     user_id = try_input(int(e10.get()))
