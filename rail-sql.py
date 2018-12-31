@@ -109,19 +109,18 @@ e2 = Entry(master)  # Name
 e2.insert(END, '**CTA Series 2600**')
 
 e3 = Entry(master)  # Description
-e3.insert(END, '**Type description here**')
 
 e4 = Entry(master)  # CabinLength
 e4.insert(END, '0.00')
 
 e5 = Entry(master)  # WheelLength
-e5.insert(END, '0.00')
+e5.insert(END, 'Distance between wheel axles')
 
 e6 = Entry(master)  # WheelAnchor
-e6.insert(END, '0.00')
+e6.insert(END, 'Full length between inner rails (0.00)')
 
 e7 = Entry(master)  # TrackGauge
-e7.insert(END, '0.00')
+e7.insert(END, 'Length between rail center')
 
 e8 = Text(master)  # Envelope
 e8.insert(END, 'Width\tHeight (no header)')
